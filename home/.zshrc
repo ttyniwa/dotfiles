@@ -82,3 +82,22 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# homebrew
+## caskのインストール先を変更
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+## brewコマンドを使った時にbrewfileを自動で更新する 
+if [ -f $(brew --prefix)/etc/brew-wrap ];then
+  source $(brew --prefix)/etc/brew-wrap
+fi
+
+# 履歴
+export HISTSIZE=9999
+export SAVEHIST=99999
+bindkey '^P' history-beginning-search-backward
+bindkey '^N' history-beginning-search-forward
+
+# tmuxで使うのでアンバインド
+bindkey -r C-t
+
+
