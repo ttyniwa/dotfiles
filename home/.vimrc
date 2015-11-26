@@ -37,13 +37,19 @@ set expandtab
 "" vimが挿入するインデントの幅
 set shiftwidth=4
 
-" カーソル移動
+" カーソル
 "" 上下n行の視界を確保
 set scrolloff=8
 "" 左右n文字の視界を確保
 set sidescrolloff=8
 "" 左右スクロールはn文字ずつ
 set sidescroll=1
+"" カーソル業をハイライト
+set cursorline
+"" カーソル行のハイライトスタイル
+:hi clear CursorLine
+:hi CursorLine gui=underline
+highlight CursorLine ctermbg=black guibg=black
 
 " ファイル
 "" 未保存ファイルがあっても別のファイルを開ける
@@ -99,19 +105,58 @@ set backspace=indent,eol,start
 set encoding=utf8
 set fileencodings=iso-2022-jp,sjis,japanese,euc-jp,utf-8
 
+" 一時ファイル
+"" バックアップファイルを作るディレクトリ
+set backupdir=~/.vim/backup
+"" ファイルを再度開きなおしした場合に開いていた位置を記憶するファイル
+set directory=~/.vim/swp
+"" ファイルを再度開き直した場合に前回のundo情報をレストア
+set undofile
+set undodir=~/.vim/undo
+
+""""""""""""""""""
+" 以下vim plugin "
+""""""""""""""""""
+
 " NeoBundle
+"" plugin
 set nocompatible
 if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
-
-" ここに入れたいプラグインを記入
-
+NeoBundle 'Align'
+NeoBundle 'EnhCommentify.vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'camelcasemotion'
+NeoBundle 'elzr/vim-json'
+NeoBundle 'vimwiki'
 call neobundle#end()
+"" NeoBundleCheck を走らせ起動時に未インストールプラグインをインストールする
+NeoBundleCheck
+"" ファイルタイプ別のプラグイン/インデントを有効にする
 filetype plugin indent on
 
 
+" CamelCaseMotion
+"" w,b,eでのカーソル移動をキャメルケース対応
+:map <silent> w <Plug>CamelCaseMotion_w
+:map <silent> b <Plug>CamelCaseMotion_b
+:map <silent> e <Plug>CamelCaseMotion_e
 
+" vim-json
+"" gg=Gで自動整形
+au FileType json setlocal equalprg=jq\ .
+"" :Jq <args>でバッファ全体に対してjqを実行し、変換後の文字列で置き換え
+"" FIXME まだバグっていて動かない
+command! -nargs=? Jq call s:Jq(<f-args>)
+function! s:Jq(...)
+    if 0 == a:0
+        let l:arg = "."
+    else
+        let l:arg = a:1
+    endif
+    execute "%! jq 95fe1a73-e2e2-4737-bea1-a44257c50fc8quot;" . l:arg . "95fe1a73-e2e2-4737-bea1-a44257c50fc8quot;"
+endfunction
 
