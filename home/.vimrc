@@ -1,6 +1,3 @@
-" 
-" Note. brew install vimしないとクリップボードとの連携機能が使えません。
-
 " 表示設定
 "" 行番号
 set number
@@ -93,6 +90,7 @@ nnoremap sed :<C-u>%s///g<Left><Left><Left>
 
 " OSとの連携
 "" クリップボードと連携
+"" Note. brew install vimしないとクリップボードとの連携機能が使えません。
 set clipboard=unnamed,unnamedplus
 "" マウスと連携
 set mouse=a
@@ -126,30 +124,42 @@ if has('vim_starting')
 endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
+
+""""""""""""""""""
+""""""""""""""""""
+
 NeoBundle 'Align'
 NeoBundle 'EnhCommentify.vim'
+
+""""""""""""""""""
+" unite.vim
+""""""""""""""""""
 NeoBundle 'Shougo/unite.vim'
+
+" 入力モードで開始する
+let g:unite_enable_start_insert=1
+
+""""""""""""""""""
+" CamelCaseMotion"
+""""""""""""""""""
+
 NeoBundle 'camelcasemotion'
-NeoBundle 'elzr/vim-json'
-NeoBundle 'vimwiki'
-call neobundle#end()
-"" NeoBundleCheck を走らせ起動時に未インストールプラグインをインストールする
-NeoBundleCheck
-"" ファイルタイプ別のプラグイン/インデントを有効にする
-filetype plugin indent on
 
-
-" CamelCaseMotion
-"" w,b,eでのカーソル移動をキャメルケース対応
+" w,b,eでのカーソル移動をキャメルケース対応
 :map <silent> w <Plug>CamelCaseMotion_w
 :map <silent> b <Plug>CamelCaseMotion_b
 :map <silent> e <Plug>CamelCaseMotion_e
 
-" vim-json
-"" gg=Gで自動整形
-au FileType json setlocal equalprg=jq\ .
-"" :Jq <args>でバッファ全体に対してjqを実行し、変換後の文字列で置き換え
-"" FIXME まだバグっていて動かない
+""""""""""""""""""
+" vim-json       "
+""""""""""""""""""
+
+NeoBundle 'elzr/vim-json'
+
+" gg=Gで自動整形
+au FileType json setlocal equalprg=jq\ .\ --indent\ 4
+" :Jq <args>でバッファ全体に対してjqを実行し、変換後の文字列で置き換え
+" FIXME まだバグっていて動かない
 command! -nargs=? Jq call s:Jq(<f-args>)
 function! s:Jq(...)
     if 0 == a:0
@@ -160,3 +170,32 @@ function! s:Jq(...)
     execute "%! jq 95fe1a73-e2e2-4737-bea1-a44257c50fc8quot;" . l:arg . "95fe1a73-e2e2-4737-bea1-a44257c50fc8quot;"
 endfunction
 
+NeoBundle 'vimwiki'
+
+""""""""""""""""""
+" インデントに色を付けて見やすくする
+""""""""""""""""""
+
+NeoBundle 'nathanaelkane/vim-indent-guides'
+
+" vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
+let g:indent_guides_enable_on_vim_startup = 1
+
+" 色
+"" 自動カラーを無効にする
+let g:indent_guides_auto_colors=0
+"" 奇数インデントのカラー
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#262626 ctermbg=232
+"" 偶数インデントのカラー
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#3c3c3c ctermbg=233
+"" ハイライト色の変化の幅
+let g:indent_guides_color_change_percent = 30
+
+""""""""""""""""""
+""""""""""""""""""
+
+call neobundle#end()
+"" NeoBundleCheck を走らせ起動時に未インストールプラグインをインストールする
+NeoBundleCheck
+"" ファイルタイプ別のプラグイン/インデントを有効にする
+filetype plugin indent on
