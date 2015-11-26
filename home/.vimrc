@@ -124,27 +124,31 @@ if has('vim_starting')
 endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
-
-""""""""""""""""""
-""""""""""""""""""
-
 NeoBundle 'Align'
 NeoBundle 'EnhCommentify.vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'camelcasemotion'
+NeoBundle 'elzr/vim-json'
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'vimwiki'
+call neobundle#end()
+
+"" NeoBundleCheck を走らせ起動時に未インストールプラグインをインストールする
+NeoBundleCheck
+"" ファイルタイプ別のプラグイン/インデントを有効にする
+filetype plugin indent on
+
 
 """"""""""""""""""
 " unite.vim
 """"""""""""""""""
-NeoBundle 'Shougo/unite.vim'
-
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
 
 """"""""""""""""""
 " CamelCaseMotion"
 """"""""""""""""""
-
-NeoBundle 'camelcasemotion'
-
 " w,b,eでのカーソル移動をキャメルケース対応
 :map <silent> w <Plug>CamelCaseMotion_w
 :map <silent> b <Plug>CamelCaseMotion_b
@@ -153,9 +157,6 @@ NeoBundle 'camelcasemotion'
 """"""""""""""""""
 " vim-json       "
 """"""""""""""""""
-
-NeoBundle 'elzr/vim-json'
-
 " gg=Gで自動整形
 au FileType json setlocal equalprg=jq\ .\ --indent\ 4
 " :Jq <args>でバッファ全体に対してjqを実行し、変換後の文字列で置き換え
@@ -170,14 +171,15 @@ function! s:Jq(...)
     execute "%! jq 95fe1a73-e2e2-4737-bea1-a44257c50fc8quot;" . l:arg . "95fe1a73-e2e2-4737-bea1-a44257c50fc8quot;"
 endfunction
 
-NeoBundle 'vimwiki'
+""""""""""""""""""
+" lightline      "
+""""""""""""""""""
+" 有効にする
+set laststatus=2
 
 """"""""""""""""""
-" インデントに色を付けて見やすくする
+" vim-indent-guides
 """"""""""""""""""
-
-NeoBundle 'nathanaelkane/vim-indent-guides'
-
 " vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
 let g:indent_guides_enable_on_vim_startup = 1
 
@@ -190,12 +192,3 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#262626 ctermbg=232
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#3c3c3c ctermbg=233
 "" ハイライト色の変化の幅
 let g:indent_guides_color_change_percent = 30
-
-""""""""""""""""""
-""""""""""""""""""
-
-call neobundle#end()
-"" NeoBundleCheck を走らせ起動時に未インストールプラグインをインストールする
-NeoBundleCheck
-"" ファイルタイプ別のプラグイン/インデントを有効にする
-filetype plugin indent on
