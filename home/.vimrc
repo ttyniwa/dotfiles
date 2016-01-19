@@ -112,6 +112,10 @@ set directory=~/.vim/swp
 set undofile
 set undodir=~/.vim/undo
 
+" モードライン（ファイルごとのエディタ設定）
+set modeline
+set modelines=5
+
 """"""""""""""""""
 " 以下vim plugin "
 """"""""""""""""""
